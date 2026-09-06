@@ -1,36 +1,37 @@
-// Mobile Navigation
-
 const menuBtn = document.getElementById("menuBtn");
 const navMenu = document.getElementById("navMenu");
 
 if (menuBtn && navMenu) {
 
     menuBtn.addEventListener("click", function () {
-
         navMenu.classList.toggle("active");
+
+        if (navMenu.classList.contains("active")) {
+            menuBtn.textContent = "✕";
+        } else {
+            menuBtn.textContent = "☰";
+        }
+    });
+
+    document.querySelectorAll("#navMenu a").forEach(link => {
+
+        link.addEventListener("click", function () {
+
+            navMenu.classList.remove("active");
+
+            menuBtn.textContent = "☰";
+
+        });
 
     });
 
 }
 
 
-// Close menu after clicking a link
+/* Scroll Reveal */
 
-document.querySelectorAll("#navMenu a").forEach(link => {
-
-    link.addEventListener("click", () => {
-
-        navMenu.classList.remove("active");
-
-    });
-
-});
-
-
-// Simple scroll animation
-
-const cards = document.querySelectorAll(
-    ".security-card, .about-preview, .cta, .ai-box"
+const revealElements = document.querySelectorAll(
+    ".security-card, .page-card, .about-preview, .cta, .ai-box"
 );
 
 const observer = new IntersectionObserver(
@@ -43,23 +44,26 @@ const observer = new IntersectionObserver(
                 entry.target.style.opacity = "1";
                 entry.target.style.transform = "translateY(0)";
 
+                observer.unobserve(entry.target);
+
             }
 
         });
 
     },
     {
-        threshold: 0.1
+        threshold: 0.12
     }
 );
 
 
-cards.forEach(card => {
+revealElements.forEach(element => {
 
-    card.style.opacity = "0";
-    card.style.transform = "translateY(25px)";
-    card.style.transition = "all .7s ease";
+    element.style.opacity = "0";
+    element.style.transform = "translateY(30px)";
+    element.style.transition =
+        "opacity 0.7s ease, transform 0.7s ease";
 
-    observer.observe(card);
+    observer.observe(element);
 
 });
